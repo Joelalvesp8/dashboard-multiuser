@@ -1,12 +1,11 @@
-services:
-  # PostgreSQL Database
-  - type: pserv
-    name: dashboard-db
-    env: docker
+databases:
+  - name: dashboard-db
+    databaseName: dashboard_db
+    user: dashboard_user
     plan: free
     region: ohio
-    databaseName: dashboard_db
-    databaseUser: dashboard_user
+
+services:
 
   # Backend Web Service
   - type: web
@@ -14,9 +13,10 @@ services:
     env: node
     plan: free
     region: ohio
-    buildCommand: cd backend && npm install && npm run build
-    startCommand: cd backend && npm start
-    healthCheckPath: /api/health
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
