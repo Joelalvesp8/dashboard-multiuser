@@ -47,14 +47,17 @@ export const login = async (req: Request, res: Response) => {
     );
 
     // Gerar token JWT
+    const jwtSecret = process.env.JWT_SECRET || 'fallback_secret';
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+
     const token = jwt.sign(
       {
         id: user.id,
         email: user.email,
         role_id: user.role_id,
       },
-      process.env.JWT_SECRET!,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      jwtSecret,
+      { expiresIn }
     );
 
     res.json({
